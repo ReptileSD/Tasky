@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Tasky</string>
+    <string name="title">Title</string>
+    <string name="show_note">Show note</string>
+    <string name="note_s_text">Note\'s text</string>
+    <string name="note">%1$s\n%2$s</string>
 </resources>
