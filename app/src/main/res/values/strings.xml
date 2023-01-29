@@ -4,4 +4,9 @@
     <string name="show_note">Show note</string>
     <string name="note_s_text">Note\'s text</string>
     <string name="note">%1$s\n%2$s</string>
+    <string name="open_menu">Open menu</string>
+    <string name="more_options">More options</string>
+    <string name="add_a_new_task">Add a new task</string>
+    <string name="task_title">Task title</string>
+    <string name="the_task">The task</string>
 </resources>
