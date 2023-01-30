@@ -25,4 +25,7 @@
     <string name="sort_by_name">Сортировать по названию</string>
     <string name="sort_by_date">Сортировать по дате</string>
     <string name="sort_by_importance">Сортировать по важности</string>
+    <string name="add_subtask">Добавить подзадачу</string>
+    <string name="new_subtask">Новая подзадача</string>
+    <string name="save">Сохранить</string>
 </resources>

@@ -29,6 +29,7 @@ import com.example.tasky.models.entities.task.Task
 import com.example.tasky.models.entities.task.TaskSerializer
 import com.example.tasky.models.entities.task.TasksRepository
 import com.example.tasky.other.Consts
+import android.annotation.SuppressLint
 class CompletedTasksFragment : Fragment() {
     private lateinit var binding: FragmentImportantTasksBinding
     private lateinit var adapter: TasksListAdapter
@@ -38,6 +39,7 @@ class CompletedTasksFragment : Fragment() {
     private lateinit var application: Application
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -111,6 +113,7 @@ class CompletedTasksFragment : Fragment() {
     popup.show()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun menuItemClickListener(it: MenuItem): Boolean {
         return when(it.itemId) {
             R.id.miSortByName -> {

@@ -16,21 +16,48 @@ import android.widget.Button
 import androidx.core.content.ContextCompat
 import android.content.Intent
 import com.example.tasky.other.Consts
+import android.annotation.SuppressLint
+import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.tasky.models.entities.subtask.Subtask
+import androidx.lifecycle.Observer
+import com.example.tasky.other.SubtasksListAdapter
+import com.example.tasky.viewModels.SubtasksViewModel
+import com.example.tasky.viewModels.SubtasksViewModelFactory
 class EditTaskActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditTaskBinding
     private lateinit var viewModel: TasksViewModel
+    private lateinit var subtasksViewModel: SubtasksViewModel
     private lateinit var taskSerializable: TaskSerializer
+
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditTaskBinding.inflate(layoutInflater)
         val database = TasksDatabase.getInstance(this)
         val repository = TasksRepository(database)
         val viewModelFactory = TasksViewModelFactory(application, repository)
+        val subViewModelFactory = SubtasksViewModelFactory(application, repository)
         viewModel = ViewModelProvider(this, viewModelFactory)[TasksViewModel::class.java]
+        subtasksViewModel =
+            ViewModelProvider(this, subViewModelFactory)[SubtasksViewModel::class.java]
         setContentView(binding.root)
 
         binding.apply {
             taskSerializable = intent.getSerializableExtra(Consts.TASK_EXTRA) as TaskSerializer
+            val adapter = SubtasksListAdapter(
+                subtasksViewModel.getAllSubtasks(taskSerializable.ID as Int).value?.reversed()
+                    ?: listOf(), subtasksViewModel
+            )
+            val layoutManager = LinearLayoutManager(this@EditTaskActivity)
+            val subtasksObserver = Observer<List<Subtask>> {
+                adapter.subtasks = it.reversed()
+                adapter.notifyDataSetChanged()
+            }
+            subtasksViewModel.getAllSubtasks(taskSerializable.ID as Int)
+                .observe(this@EditTaskActivity, subtasksObserver)
+            rvSubtasks.adapter = adapter
+            rvSubtasks.layoutManager = layoutManager
             etTitleEdit.setText(taskSerializable.title)
             etDescriptionEdit.setText(taskSerializable.task)
             tvDate.text = taskSerializable.date
@@ -62,6 +89,11 @@ class EditTaskActivity : AppCompatActivity() {
                 setResult(Consts.EDIT_TASK_RESULT_CODE, intent)
                 finish()
             }
+
+            btnAddSubtask.setOnClickListener {
+                subtasksViewModel.insert(Subtask("", taskSerializable.ID as Int))
+            }
+
             tvDate.setOnClickListener {
                 val calendar = Calendar.getInstance()
                 val year = calendar.get(Calendar.YEAR)

@@ -24,4 +24,7 @@
     <string name="sort_by_name">Sort by name</string>
     <string name="sort_by_date">Sort by date</string>
     <string name="sort_by_importance">Sort by importance</string>
+    <string name="add_subtask">Add subtask</string>
+    <string name="new_subtask">New subtask</string>
+    <string name="save">Save</string>
 </resources>

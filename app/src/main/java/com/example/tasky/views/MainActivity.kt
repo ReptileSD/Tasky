@@ -54,35 +54,39 @@ class MainActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskDialogInter
 
 
     override fun addTask(title: String, task: String, date: String) {
-        val newTask = Task(title, task, isCompleted = false, isImportant = false, date)
+        val isImportant
+                = supportFragmentManager.findFragmentByTag("importantTasksFragment") != null
+        val isCompleted
+                = supportFragmentManager.findFragmentByTag("completedTasksFragment") != null
+        val newTask = Task(title, task, isCompleted, isImportant, date)
         viewModel.add(newTask)
     }
     private fun showPopup(v: View) {
-    val popup = PopupMenu(this, v)
-    popup.inflate(R.menu.burger_menu)
-    popup.setOnMenuItemClickListener {menuItemClickListener(it)}
-    popup.show()
-}
+        val popup = PopupMenu(this, v)
+        popup.inflate(R.menu.burger_menu)
+        popup.setOnMenuItemClickListener { menuItemClickListener(it) }
+        popup.show()
+    }
 
 private fun menuItemClickListener(it: MenuItem): Boolean {
-    when(it.itemId) {
+    when (it.itemId) {
         R.id.miAllTasks -> {
             supportFragmentManager.beginTransaction().apply {
-                replace(R.id.frgTasks, allTasksFragment)
+                replace(R.id.frgTasks, allTasksFragment, "allTasksFragment")
                 commit()
             }
             return true
         }
         R.id.miImportantTasks -> {
             supportFragmentManager.beginTransaction().apply {
-                replace(R.id.frgTasks, importantTasksFragment)
+                replace(R.id.frgTasks, importantTasksFragment, "importantTasksFragment")
                 commit()
             }
             return true
         }
         R.id.miCompletedTasks -> {
             supportFragmentManager.beginTransaction().apply {
-                replace(R.id.frgTasks, completedTasksFragment)
+                replace(R.id.frgTasks, completedTasksFragment, "completedTasksFragment")
                 commit()
             }
             return true
