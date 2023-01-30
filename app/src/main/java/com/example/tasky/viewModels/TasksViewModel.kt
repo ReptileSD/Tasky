@@ -2,9 +2,9 @@ package com.example.tasky.viewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.example.tasky.models.Task
+import com.example.tasky.models.entities.task.Task
 import androidx.lifecycle.viewModelScope
-import com.example.tasky.models.TasksRepository
+import com.example.tasky.models.entities.task.TasksRepository
 import kotlinx.coroutines.launch
 
 class TasksViewModel(application: Application, private val repository: TasksRepository) :

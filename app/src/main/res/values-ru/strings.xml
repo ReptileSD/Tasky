@@ -22,4 +22,7 @@
     <string name="important_tasks">Важные задачи</string>
     <string name="completed_tasks">Выполненные задачи</string>
     <string name="date_s_not_chosen">Дата не выбрана</string>
+    <string name="sort_by_name">Сортировать по названию</string>
+    <string name="sort_by_date">Сортировать по дате</string>
+    <string name="sort_by_importance">Сортировать по важности</string>
 </resources>

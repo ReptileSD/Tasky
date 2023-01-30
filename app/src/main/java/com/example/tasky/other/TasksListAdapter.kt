@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasky.databinding.TaskItemBinding
-import com.example.tasky.models.Task
 import com.example.tasky.viewModels.TasksViewModel
-import android.util.Log
 import com.example.tasky.R
 import android.graphics.Paint
+import com.example.tasky.models.entities.task.Task
 class TasksListAdapter(
     var tasks: List<Task>,
     private val viewModel: TasksViewModel,

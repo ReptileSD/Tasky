@@ -3,7 +3,8 @@ package com.example.tasky.viewModels
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.tasky.models.TasksRepository
+import com.example.tasky.models.entities.task.TasksRepository
+
 
 class TasksViewModelFactory(
     private val application: Application,

@@ -21,4 +21,7 @@
     <string name="important_tasks">Important tasks</string>
     <string name="completed_tasks">Completed tasks</string>
     <string name="date_s_not_chosen">Date\'s not chosen</string>
+    <string name="sort_by_name">Sort by name</string>
+    <string name="sort_by_date">Sort by date</string>
+    <string name="sort_by_importance">Sort by importance</string>
 </resources>

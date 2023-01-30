@@ -1,4 +1,4 @@
-package com.example.tasky.models
+package com.example.tasky.models.entities.task
 import java.io.Serializable
 
 data class TaskSerializer(

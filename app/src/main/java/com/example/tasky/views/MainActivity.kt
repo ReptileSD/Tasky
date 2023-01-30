@@ -1,30 +1,19 @@
 package com.example.tasky.views
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tasky.other.CreateTaskDialog
-import com.example.tasky.other.TasksItemTouchHelper
-import com.example.tasky.other.TasksListAdapter
 import com.example.tasky.databinding.ActivityMainBinding
-import com.example.tasky.models.Task
+import com.example.tasky.models.entities.task.Task
 import com.example.tasky.viewModels.TasksViewModel
 import com.example.tasky.models.TasksDatabase
-import com.example.tasky.models.TasksRepository
+import com.example.tasky.models.entities.task.TasksRepository
 import com.example.tasky.viewModels.TasksViewModelFactory
-import android.content.Intent
-import com.example.tasky.models.TaskSerializer
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.PopupMenu
-import android.widget.Toast
 import com.example.tasky.R
-import android.app.Activity
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 
 class MainActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskDialogInterface {
     private lateinit var binding: ActivityMainBinding

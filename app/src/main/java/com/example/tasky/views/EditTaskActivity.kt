@@ -2,24 +2,20 @@ package com.example.tasky.views
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.tasky.databinding.ActivityEditTaskBinding
-import com.example.tasky.models.TaskSerializer
+import com.example.tasky.models.entities.task.TaskSerializer
 import androidx.lifecycle.ViewModelProvider
 import com.example.tasky.models.TasksDatabase
-import com.example.tasky.models.TasksRepository
+import com.example.tasky.models.entities.task.TasksRepository
 import com.example.tasky.viewModels.TasksViewModel
 import com.example.tasky.viewModels.TasksViewModelFactory
-import com.google.android.material.snackbar.Snackbar
-import android.app.ProgressDialog.show
 import com.example.tasky.R
-import com.example.tasky.databinding.ActivityMainBinding
-import com.example.tasky.models.Task
 import android.app.DatePickerDialog
 import java.text.DateFormat
 import java.util.*
-import android.graphics.Color.red
 import android.widget.Button
 import androidx.core.content.ContextCompat
 import android.content.Intent
+import com.example.tasky.other.Consts
 class EditTaskActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditTaskBinding
     private lateinit var viewModel: TasksViewModel
@@ -34,7 +30,7 @@ class EditTaskActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.apply {
-            taskSerializable = intent.getSerializableExtra("Task") as TaskSerializer
+            taskSerializable = intent.getSerializableExtra(Consts.TASK_EXTRA) as TaskSerializer
             etTitleEdit.setText(taskSerializable.title)
             etDescriptionEdit.setText(taskSerializable.task)
             tvDate.text = taskSerializable.date
@@ -62,8 +58,8 @@ class EditTaskActivity : AppCompatActivity() {
 
             btnDelete.setOnClickListener {
                 val intent = Intent()
-                intent.putExtra("Task", taskSerializable)
-                setResult(123, intent)
+                intent.putExtra(Consts.TASK_EXTRA, taskSerializable)
+                setResult(Consts.EDIT_TASK_RESULT_CODE, intent)
                 finish()
             }
             tvDate.setOnClickListener {

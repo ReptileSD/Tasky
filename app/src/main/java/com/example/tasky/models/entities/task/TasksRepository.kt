@@ -1,4 +1,6 @@
-package com.example.tasky.models
+package com.example.tasky.models.entities.task
+
+import com.example.tasky.models.TasksDatabase
 
 class TasksRepository(private val db: TasksDatabase) {
     suspend fun insert(task: Task) = db.getTasksDao().insert(task)

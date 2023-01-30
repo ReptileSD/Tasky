@@ -5,15 +5,21 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.AutoMigration
+import com.example.tasky.models.entities.subtask.Subtask
+import com.example.tasky.models.entities.subtask.SubtasksDao
+import com.example.tasky.models.entities.task.Task
+import com.example.tasky.models.entities.task.TasksDao
+
 @Database(
-    entities = [Task::class],
+    entities = [Task::class, Subtask::class],
     exportSchema = true,
-    version = 1,
-//    autoMigrations = [AutoMigration(from = 1, to = 2), AutoMigration(from = 2, to = 3)]
+    version = 2,
+    autoMigrations = [AutoMigration(from = 1, to = 2)]
     )
 abstract class TasksDatabase : RoomDatabase() {
 
     abstract fun getTasksDao(): TasksDao
+    abstract fun getSubtasksDao(): SubtasksDao
 
     companion object {
         @Volatile
@@ -21,7 +27,7 @@ abstract class TasksDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): TasksDatabase {
             synchronized(this) {
-                if (!::instance.isInitialized) {
+                if (!Companion::instance.isInitialized) {
                     instance = createDatabase(context)
                 }
                 return instance

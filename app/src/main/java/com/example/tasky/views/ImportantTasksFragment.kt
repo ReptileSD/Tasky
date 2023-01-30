@@ -14,12 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tasky.R
 import com.example.tasky.databinding.FragmentImportantTasksBinding
-import com.example.tasky.databinding.FragmentTasksBinding
-import com.example.tasky.models.Task
-import com.example.tasky.models.TaskSerializer
 import com.example.tasky.models.TasksDatabase
-import com.example.tasky.models.TasksRepository
-import com.example.tasky.other.CreateTaskDialog
 import com.example.tasky.other.TasksItemTouchHelper
 import com.example.tasky.other.TasksListAdapter
 import com.example.tasky.viewModels.TasksViewModel
@@ -27,6 +22,13 @@ import com.example.tasky.viewModels.TasksViewModelFactory
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
 import androidx.activity.result.ActivityResultLauncher
+import android.view.MenuItem
+import android.widget.ImageButton
+import android.widget.PopupMenu
+import com.example.tasky.models.entities.task.Task
+import com.example.tasky.models.entities.task.TaskSerializer
+import com.example.tasky.models.entities.task.TasksRepository
+import com.example.tasky.other.Consts
 
 
 class ImportantTasksFragment : Fragment() {
@@ -76,10 +78,13 @@ class ImportantTasksFragment : Fragment() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activity?.findViewById<ImageButton>(R.id.moreOptions)?.setOnClickListener {
+            showPopup(it)
+        }
         resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == 123) {
+            if (result.resultCode == Consts.EDIT_TASK_RESULT_CODE) {
                 val data: Intent = result.data ?: return@registerForActivityResult
-                val task = TaskSerializer.toTask(data.getSerializableExtra("Task") as TaskSerializer)
+                val task = TaskSerializer.toTask(data.getSerializableExtra(Consts.TASK_EXTRA) as TaskSerializer)
                 viewModel.delete(task)
                 Snackbar.make(binding.root, R.string.task_deleted, Snackbar.LENGTH_LONG)
                     .setAction(R.string.undo) {
@@ -91,8 +96,35 @@ class ImportantTasksFragment : Fragment() {
     }
     private fun openEditTaskActivity(task: Task) {
         Intent(requireActivity(), EditTaskActivity::class.java).also { intent ->
-            intent.putExtra("Task", TaskSerializer.fromTask(task))
+            intent.putExtra(Consts.TASK_EXTRA, TaskSerializer.fromTask(task))
             resultLauncher.launch(intent)
+        }
+    }
+    private fun showPopup(v: View) {
+        val popup = PopupMenu(activityContext, v)
+        popup.inflate(R.menu.options_menu)
+        popup.setOnMenuItemClickListener {menuItemClickListener(it)}
+        popup.show()
+    }
+
+    private fun menuItemClickListener(it: MenuItem): Boolean {
+        return when(it.itemId) {
+            R.id.miSortByName -> {
+                adapter.tasks = adapter.tasks.sortedBy { task -> task.title }
+                adapter.notifyDataSetChanged()
+                true
+            }
+            R.id.miSortByDate -> {
+                adapter.tasks = adapter.tasks.sortedBy { task -> task.date}
+                adapter.notifyDataSetChanged()
+                true
+            }
+            R.id.miSortByImportance -> {
+                adapter.tasks = adapter.tasks.sortedBy { task -> !task.isImportant }
+                adapter.notifyDataSetChanged()
+                true
+            }
+            else -> false
         }
     }
 }
