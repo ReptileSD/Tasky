@@ -1,17 +1,17 @@
 package com.example.tasky.models
 import java.io.Serializable
 
-data class TaskSerializable(
-    val title: String,
-    val task: String,
-    val isCompleted: Boolean,
+data class TaskSerializer(
+    var title: String,
+    var task: String,
+    var isCompleted: Boolean,
     val ID: Int? = null
 ) : Serializable
 
 {
 
     companion object {
-        fun toTask(src: TaskSerializable): Task {
+        fun toTask(src: TaskSerializer): Task {
             return Task(
                 src.title,
                 src.task,
@@ -20,8 +20,8 @@ data class TaskSerializable(
             )
         }
 
-        fun fromTask(src: Task): TaskSerializable {
-            return TaskSerializable(
+        fun fromTask(src: Task): TaskSerializer {
+            return TaskSerializer(
                 src.title,
                 src.task,
                 src.isCompleted,

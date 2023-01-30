@@ -1,9 +1,8 @@
 package com.example.tasky.views
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.tasky.R
 import com.example.tasky.databinding.ActivityEditTaskBinding
-import com.example.tasky.models.TaskSerializable
+import com.example.tasky.models.TaskSerializer
 import androidx.lifecycle.ViewModelProvider
 import com.example.tasky.models.Task
 import com.example.tasky.models.TasksDatabase
@@ -22,17 +21,13 @@ class EditTaskActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.apply {
-            val taskSerializable = intent.getSerializableExtra("Task") as TaskSerializable
+            val taskSerializable = intent.getSerializableExtra("Task") as TaskSerializer
             etTitleEdit.setText(taskSerializable.title)
             etDescriptionEdit.setText(taskSerializable.task)
             btnBack.setOnClickListener {
-                val editedTask = Task(
-                    etTitleEdit.text.toString(),
-                    etDescriptionEdit.text.toString(),
-                    taskSerializable.isCompleted,
-                    taskSerializable.ID
-                )
-                viewModel.update(editedTask)
+                taskSerializable.title = etTitleEdit.text.toString()
+                taskSerializable.task = etDescriptionEdit.text.toString()
+                viewModel.update(TaskSerializer.toTask(taskSerializable))
                 finish()
             }        }
     }

@@ -16,7 +16,7 @@ import com.example.tasky.models.TasksDatabase
 import com.example.tasky.models.TasksRepository
 import com.example.tasky.viewModels.TasksViewModelFactory
 import android.content.Intent
-import com.example.tasky.models.TaskSerializable
+import com.example.tasky.models.TaskSerializer
 class MainActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskDialogInterface {
     private lateinit var binding: ActivityMainBinding
     private lateinit var tasksList: MutableList<Task>
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskDialogInter
         adapter =
             TasksListAdapter(viewModel.getAllTasks().value?.reversed() ?: listOf(), viewModel) {
                 Intent(this, EditTaskActivity::class.java).also { intent ->
-                    intent.putExtra("Task", TaskSerializable.fromTask(it))
+                    intent.putExtra("Task", TaskSerializer.fromTask(it))
                     startActivity(intent)
                 }
             }
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskDialogInter
             adapter.notifyDataSetChanged()
         }
         viewModel.getAllTasks().observe(this, tasksObserver)
-        val itemTouchHelper = TasksItemTouchHelper(viewModel, adapter)
+        val itemTouchHelper = TasksItemTouchHelper(viewModel, adapter, binding.root)
         itemTouchHelper.attachToRecyclerView(binding.rvTasks)
 
         setContentView(binding.root)

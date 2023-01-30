@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasky.databinding.TaskItemBinding
-import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.tasky.models.Task
 import com.example.tasky.viewModels.TasksViewModel
-import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.tasky.models.TaskSerializer
 class TasksListAdapter(
     var tasks: List<Task>,
     val viewModel: TasksViewModel,
@@ -21,14 +20,9 @@ class TasksListAdapter(
         init {
             binding.recyclerItem.setOnClickListener { clickListener(tasks[adapterPosition]) }
             binding.cbCompleted.setOnCheckedChangeListener { _, isChecked ->
-                val task = tasks[adapterPosition]
-                val editedTask = Task(
-                    task.title,
-                    task.task,
-                    isChecked,
-                    task.ID
-                )
-                viewModel.update(editedTask)
+                val taskSerializable = TaskSerializer.fromTask(tasks[adapterPosition])
+                taskSerializable.isCompleted = isChecked
+                viewModel.update(TaskSerializer.toTask(taskSerializable))
             }
         }
     }

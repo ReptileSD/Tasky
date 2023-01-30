@@ -13,4 +13,6 @@
     <string name="go_back">Назад</string>
     <string name="delete">Удалить</string>
     <string name="move_to_important">Перенести в Важное</string>
+    <string name="task_deleted">Задача удалена</string>
+    <string name="undo">Отменить</string>
 </resources>
