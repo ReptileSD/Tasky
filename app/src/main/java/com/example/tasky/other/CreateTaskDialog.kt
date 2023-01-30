@@ -10,7 +10,11 @@ import com.example.tasky.databinding.CreateTaskDialogBinding
 import android.text.Editable
 import android.text.TextWatcher
 import com.example.tasky.R
-
+import android.app.DatePickerDialog
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import javax.xml.datatype.DatatypeConstants.MONTHS
 class CreateTaskDialog : AppCompatDialogFragment() {
     private lateinit var dialogInterface: CreateTaskDialogInterface
     private var _binding: CreateTaskDialogBinding? = null
@@ -44,6 +48,31 @@ class CreateTaskDialog : AppCompatDialogFragment() {
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = !s.isNullOrEmpty()
             }
         })
+
+
+        binding.btnSetDate.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+
+            val dpd = DatePickerDialog(
+                requireContext(),
+                DatePickerDialog.OnDateSetListener { _, yearPicked, monthOfYear, dayOfMonth ->
+                    calendar.set(Calendar.YEAR, yearPicked)
+                    calendar.set(Calendar.MONTH, monthOfYear)
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                    val date = DateFormat.getDateInstance().format(calendar.time)
+                    binding.tvDate.text = date
+                },
+                year,
+                month,
+                day
+            )
+
+            dpd.show()
+        }
 
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false

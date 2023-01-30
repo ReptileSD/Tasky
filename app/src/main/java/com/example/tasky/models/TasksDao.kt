@@ -11,7 +11,7 @@ interface TasksDao {
     @Delete
     suspend fun delete(task: Task)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.ABORT)
     suspend fun update(task: Task)
 
     @Query("SELECT * FROM Tasks")

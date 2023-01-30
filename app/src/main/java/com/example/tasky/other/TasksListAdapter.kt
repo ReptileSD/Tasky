@@ -8,10 +8,12 @@ import com.example.tasky.databinding.TaskItemBinding
 import com.example.tasky.models.Task
 import com.example.tasky.viewModels.TasksViewModel
 import com.example.tasky.models.TaskSerializer
+import android.util.Log
+import kotlinx.coroutines.coroutineScope
 class TasksListAdapter(
     var tasks: List<Task>,
-    val viewModel: TasksViewModel,
-    val clickListener: (Task) -> Unit
+    private val viewModel: TasksViewModel,
+    val clickListener: (Task) -> Unit,
 ) :    RecyclerView.Adapter<TasksListAdapter.TasksListViewHolder>() {
     inner class TasksListViewHolder(
         val binding: TaskItemBinding,
@@ -19,11 +21,6 @@ class TasksListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.recyclerItem.setOnClickListener { clickListener(tasks[adapterPosition]) }
-            binding.cbCompleted.setOnCheckedChangeListener { _, isChecked ->
-                val taskSerializable = TaskSerializer.fromTask(tasks[adapterPosition])
-                taskSerializable.isCompleted = isChecked
-                viewModel.update(TaskSerializer.toTask(taskSerializable))
-            }
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
@@ -35,7 +32,13 @@ class TasksListAdapter(
         holder.binding.apply {
             tvTaskTitle.text = tasks[position].title
             tvTaskDescription.text = tasks[position].task
+            cbCompleted.setOnCheckedChangeListener(null)
             cbCompleted.isChecked = tasks[position].isCompleted
+            cbCompleted.setOnCheckedChangeListener { _, isChecked ->
+                val task = tasks[position]
+                val editedTask = Task(task.title, task.task, isChecked, task.ID)
+                viewModel.update(editedTask)
+            }
         }
     }
 

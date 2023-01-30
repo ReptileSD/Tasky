@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tasky.other.CreateTaskDialog
 import com.example.tasky.other.TasksItemTouchHelper
@@ -53,22 +52,13 @@ class MainActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskDialogInter
         binding.apply {
             rvTasks.adapter = adapter
             rvTasks.layoutManager = layoutManager
-            rvTasks.addItemDecoration(
-                DividerItemDecoration(
-                    this@MainActivity,
-                    LinearLayoutManager.VERTICAL
-                )
-            )
+
 
             fbtnAdd.setOnClickListener {
-                showCreateTaskDialog()
-            }
+                CreateTaskDialog().show(supportFragmentManager, "Add task")            }
         }
     }
 
-    private fun showCreateTaskDialog() {
-        CreateTaskDialog().show(supportFragmentManager, "Add task")
-    }
 
     override fun addTask(title: String, task: String) {
         val newTask = Task(title, task, false)
