@@ -12,9 +12,7 @@ import android.text.TextWatcher
 import com.example.tasky.R
 import android.app.DatePickerDialog
 import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
-import javax.xml.datatype.DatatypeConstants.MONTHS
 class CreateTaskDialog : AppCompatDialogFragment() {
     private lateinit var dialogInterface: CreateTaskDialogInterface
     private var _binding: CreateTaskDialogBinding? = null
@@ -31,7 +29,8 @@ class CreateTaskDialog : AppCompatDialogFragment() {
             .setPositiveButton(R.string.add) { dialog, _ ->
                 val title = binding.etTitle.text.toString()
                 val task = binding.etDescription.text.toString()
-                dialogInterface.addTask(title, task)
+                val date = binding.tvDate.text.toString()
+                dialogInterface.addTask(title, task, date)
                 dialog.dismiss()
             }
 
@@ -59,7 +58,7 @@ class CreateTaskDialog : AppCompatDialogFragment() {
 
             val dpd = DatePickerDialog(
                 requireContext(),
-                DatePickerDialog.OnDateSetListener { _, yearPicked, monthOfYear, dayOfMonth ->
+                { _, yearPicked, monthOfYear, dayOfMonth ->
                     calendar.set(Calendar.YEAR, yearPicked)
                     calendar.set(Calendar.MONTH, monthOfYear)
                     calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -91,6 +90,6 @@ class CreateTaskDialog : AppCompatDialogFragment() {
     }
 
     interface CreateTaskDialogInterface {
-        fun addTask(title: String, task: String)
+        fun addTask(title: String, task: String, date: String)
     }
 }

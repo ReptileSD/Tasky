@@ -15,6 +15,9 @@ data class Task(
     @ColumnInfo(name = "isCompleted")
     val isCompleted: Boolean,
 
+    @ColumnInfo(name = "TaskDate", defaultValue = "")
+    val date: String,
+
     @PrimaryKey(autoGenerate = true)
     val ID: Int? = null,
 

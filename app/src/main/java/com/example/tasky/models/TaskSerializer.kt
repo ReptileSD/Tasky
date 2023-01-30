@@ -5,6 +5,7 @@ data class TaskSerializer(
     var title: String,
     var task: String,
     var isCompleted: Boolean,
+    var date: String,
     val ID: Int? = null
 ) : Serializable
 
@@ -16,6 +17,7 @@ data class TaskSerializer(
                 src.title,
                 src.task,
                 src.isCompleted,
+                src.date,
                 src.ID
             )
         }
@@ -25,6 +27,7 @@ data class TaskSerializer(
                 src.title,
                 src.task,
                 src.isCompleted,
+                src.date,
                 src.ID
             )
         }

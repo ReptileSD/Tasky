@@ -13,27 +13,28 @@ import android.app.ProgressDialog.show
 import com.example.tasky.R
 import com.example.tasky.databinding.ActivityMainBinding
 import com.example.tasky.models.Task
+import android.app.DatePickerDialog
+import java.text.DateFormat
+import java.util.*
 class EditTaskActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditTaskBinding
+    private lateinit var viewModel: TasksViewModel
+    private lateinit var taskSerializable: TaskSerializer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditTaskBinding.inflate(layoutInflater)
         val database = TasksDatabase.getInstance(this)
         val repository = TasksRepository(database)
         val viewModelFactory = TasksViewModelFactory(application, repository)
-        val viewModel = ViewModelProvider(this, viewModelFactory)[TasksViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[TasksViewModel::class.java]
         setContentView(binding.root)
 
         binding.apply {
-            val taskSerializable = intent.getSerializableExtra("Task") as TaskSerializer
+            taskSerializable = intent.getSerializableExtra("Task") as TaskSerializer
             etTitleEdit.setText(taskSerializable.title)
             etDescriptionEdit.setText(taskSerializable.task)
-            btnBack.setOnClickListener {
-                taskSerializable.title = etTitleEdit.text.toString()
-                taskSerializable.task = etDescriptionEdit.text.toString()
-                viewModel.update(TaskSerializer.toTask(taskSerializable))
-                finish()
-            }
+            tvDate.text = taskSerializable.date
+            btnBack.setOnClickListener {onBackPressed()}
 
             btnDelete.setOnClickListener {
                 val task = TaskSerializer.toTask(taskSerializable)
@@ -50,6 +51,40 @@ class EditTaskActivity : AppCompatActivity() {
                     })
                     .show()
             }
+            tvDate.setOnClickListener {
+                val calendar = Calendar.getInstance()
+                val year = calendar.get(Calendar.YEAR)
+                val month = calendar.get(Calendar.MONTH)
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+
+                val dpd = DatePickerDialog(
+                    this@EditTaskActivity,
+                    { _, yearPicked, monthOfYear, dayOfMonth ->
+                        calendar.set(Calendar.YEAR, yearPicked)
+                        calendar.set(Calendar.MONTH, monthOfYear)
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                        val date = DateFormat.getDateInstance().format(calendar.time)
+                        tvDate.text = date
+                    },
+                    year,
+                    month,
+                    day
+                )
+
+                dpd.show()
+            }
         }
     }
-}
+
+    override fun onBackPressed() {
+        binding.apply {
+            taskSerializable.title = etTitleEdit.text.toString()
+            taskSerializable.task = etDescriptionEdit.text.toString()
+            taskSerializable.date = tvDate.text.toString()
+
+    }
+    viewModel.update(TaskSerializer.toTask(taskSerializable))
+    super.onBackPressed()
+        }
+    }

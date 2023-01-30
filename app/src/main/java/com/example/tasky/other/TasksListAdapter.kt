@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tasky.databinding.TaskItemBinding
 import com.example.tasky.models.Task
 import com.example.tasky.viewModels.TasksViewModel
-import com.example.tasky.models.TaskSerializer
-import android.util.Log
-import kotlinx.coroutines.coroutineScope
+
 class TasksListAdapter(
     var tasks: List<Task>,
     private val viewModel: TasksViewModel,
@@ -36,7 +34,7 @@ class TasksListAdapter(
             cbCompleted.isChecked = tasks[position].isCompleted
             cbCompleted.setOnCheckedChangeListener { _, isChecked ->
                 val task = tasks[position]
-                val editedTask = Task(task.title, task.task, isChecked, task.ID)
+                val editedTask = Task(task.title, task.task, isChecked, task.date, task.ID)
                 viewModel.update(editedTask)
             }
         }
