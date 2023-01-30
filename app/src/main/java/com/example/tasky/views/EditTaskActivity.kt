@@ -19,6 +19,7 @@ import java.util.*
 import android.graphics.Color.red
 import android.widget.Button
 import androidx.core.content.ContextCompat
+import android.content.Intent
 class EditTaskActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditTaskBinding
     private lateinit var viewModel: TasksViewModel
@@ -60,19 +61,10 @@ class EditTaskActivity : AppCompatActivity() {
             }
 
             btnDelete.setOnClickListener {
-                val task = TaskSerializer.toTask(taskSerializable)
-                viewModel.delete(task)
-                Snackbar.make(binding.root, R.string.task_deleted, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.undo) {
-                        viewModel.add(task)
-                    }
-                    .addCallback(object : Snackbar.Callback() {
-                        override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                            if (event != DISMISS_EVENT_ACTION)
-                                finish()
-                        }
-                    })
-                    .show()
+                val intent = Intent()
+                intent.putExtra("Task", taskSerializable)
+                setResult(123, intent)
+                finish()
             }
             tvDate.setOnClickListener {
                 val calendar = Calendar.getInstance()

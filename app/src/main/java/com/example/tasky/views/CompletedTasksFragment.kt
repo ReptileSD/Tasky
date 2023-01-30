@@ -24,7 +24,9 @@ import com.example.tasky.other.TasksItemTouchHelper
 import com.example.tasky.other.TasksListAdapter
 import com.example.tasky.viewModels.TasksViewModel
 import com.example.tasky.viewModels.TasksViewModelFactory
-
+import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.material.snackbar.Snackbar
+import androidx.activity.result.ActivityResultLauncher
 class CompletedTasksFragment : Fragment() {
     private lateinit var binding: FragmentImportantTasksBinding
     private lateinit var adapter: TasksListAdapter
@@ -32,6 +34,7 @@ class CompletedTasksFragment : Fragment() {
     private lateinit var viewModel: TasksViewModel
     private lateinit var activityContext: Context
     private lateinit var application: Application
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,11 +48,11 @@ class CompletedTasksFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory)[TasksViewModel::class.java]
 
         adapter =
-            TasksListAdapter(viewModel.getCompletedTasks().value?.reversed() ?: listOf(), viewModel) {
-                Intent(activityContext, EditTaskActivity::class.java).also { intent ->
-                    intent.putExtra("Task", TaskSerializer.fromTask(it))
-                    startActivity(intent)
-                }
+            TasksListAdapter(
+                viewModel.getCompletedTasks().value?.reversed() ?: listOf(),
+                viewModel
+            ) {
+                openEditTaskActivity(it)
             }
         layoutManager = LinearLayoutManager(activityContext)
         val tasksObserver = Observer<List<Task>> {
@@ -72,4 +75,29 @@ class CompletedTasksFragment : Fragment() {
         activityContext = context
         application = (context as Activity).application
     }
-}
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == 123) {
+                    val data: Intent = result.data ?: return@registerForActivityResult
+                    val task =
+                        TaskSerializer.toTask(data.getSerializableExtra("Task") as TaskSerializer)
+                    viewModel.delete(task)
+                    Snackbar.make(binding.root, R.string.task_deleted, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.undo) {
+                            viewModel.add(task)
+                        }
+                        .show()
+                }
+            }
+    }
+
+    private fun openEditTaskActivity(task: Task) {
+        Intent(requireActivity(), EditTaskActivity::class.java).also { intent ->
+            intent.putExtra("Task", TaskSerializer.fromTask(task))
+            resultLauncher.launch(intent)
+            }
+        }
+    }

@@ -21,4 +21,5 @@
     <string name="all_tasks">Все задачи</string>
     <string name="important_tasks">Важные задачи</string>
     <string name="completed_tasks">Выполненные задачи</string>
+    <string name="date_s_not_chosen">Дата не выбрана</string>
 </resources>

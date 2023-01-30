@@ -6,14 +6,17 @@
     android:id="@+id/recyclerItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="24dp"
-    android:clickable="true"
-    app:cardBackgroundColor="@color/white"
-    android:elevation="5dp"
-    app:contentPadding="8dp"
     android:layout_margin="8dp"
-    android:focusable="true">
+
+    android:clickable="true"
+
+    android:elevation="5dp"
+
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="24dp"
+    app:contentPadding="8dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,6 +68,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
             android:src="@drawable/ic_baseline_star_outline_24"
             android:contentDescription="@string/add_to_important"
             app:layout_constraintBottom_toBottomOf="parent"
