@@ -41,7 +41,12 @@ class EditTaskActivity : AppCompatActivity() {
             val text = getCompletedButtonText(taskSerializable.isCompleted)
             btnTaskCompleted.text = text
             btnTaskCompleted.setBackgroundColor(color)
-            btnBack.setOnClickListener {onBackPressed()}
+
+            btnImportant.setImageResource(
+                if (taskSerializable.isImportant) R.drawable.ic_baseline_star_24 else R.drawable.ic_baseline_star_outline_24
+            )
+
+            btnBack.setOnClickListener { onBackPressed() }
 
             btnTaskCompleted.setOnClickListener {
                 taskSerializable.isCompleted = !taskSerializable.isCompleted
@@ -91,6 +96,14 @@ class EditTaskActivity : AppCompatActivity() {
                 )
 
                 dpd.show()
+            }
+            btnImportant.setOnClickListener {
+                taskSerializable.isImportant = !taskSerializable.isImportant
+                btnImportant.setImageResource(
+                    if (taskSerializable.isImportant) R.drawable.ic_baseline_star_24 else R.drawable.ic_baseline_star_outline_24
+                )
+                val task = TaskSerializer.toTask(taskSerializable)
+                viewModel.update(task)
             }
         }
     }

@@ -22,8 +22,10 @@ class TasksListAdapter(
             binding.recyclerItem.setOnClickListener { clickListener(tasks[adapterPosition]) }
         }
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
-            TasksListAdapter.TasksListViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): TasksListAdapter.TasksListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = TaskItemBinding.inflate(layoutInflater, parent, false)
         return TasksListViewHolder(binding)    }
@@ -35,12 +37,24 @@ class TasksListAdapter(
             cbCompleted.isChecked = tasks[position].isCompleted
             cbCompleted.setOnCheckedChangeListener { _, isChecked ->
                 val task = tasks[position]
-                val editedTask = Task(task.title, task.task, isChecked, task.date, task.ID)
+                val editedTask =
+                    Task(task.title, task.task, isChecked, task.isImportant, task.date, task.ID)
                 viewModel.update(editedTask)
             }
             btnAddToFavourite.setOnClickListener(null)
+            val isImportant = tasks[position].isImportant
+            btnAddToFavourite.setImageResource(if (isImportant) R.drawable.ic_baseline_star_24 else R.drawable.ic_baseline_star_outline_24 )
             btnAddToFavourite.setOnClickListener {
-                btnAddToFavourite.setImageResource(R.drawable.ic_baseline_star_24)
+                val task = tasks[position]
+                val editedTask = Task(
+                    task.title,
+                    task.task,
+                    task.isCompleted,
+                    !task.isImportant,
+                    task.date,
+                    task.ID
+                )
+                viewModel.update(editedTask)
             }
         }
     }

@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskDialogInter
 
 
     override fun addTask(title: String, task: String, date: String) {
-        val newTask = Task(title, task, false, date)
+        val newTask = Task(title, task, isCompleted = false, isImportant = false, date)
         viewModel.add(newTask)
     }
 }
