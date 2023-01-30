@@ -18,5 +18,7 @@
     <string name="set_date">Установить дату</string>
     <string name="task_is_not_completed">Задача не выполнена</string>
     <string name="add_to_important">Добавить в важное</string>
-
+    <string name="all_tasks">Все задачи</string>
+    <string name="important_tasks">Важные задачи</string>
+    <string name="completed_tasks">Выполненные задачи</string>
 </resources>

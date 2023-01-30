@@ -8,4 +8,8 @@ class TasksRepository(private val db: TasksDatabase) {
     suspend fun update(task: Task) = db.getTasksDao().update(task)
 
     fun getAllTasks() = db.getTasksDao().getAllTasks()
+
+    fun getImportantTasks() = db.getTasksDao().getImportantTasks()
+
+    fun getCompletedTasks() = db.getTasksDao().getCompletedTasks()
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/miAllTasks"
+        app:showAsAction="never"
+        android:title="@string/all_tasks"
+        />
+    <item
+        android:id="@+id/miImportantTasks"
+        android:title="@string/important_tasks"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/miCompletedTasks"
+        android:title="@string/completed_tasks"
+        app:showAsAction="never"
+        />
+</menu>

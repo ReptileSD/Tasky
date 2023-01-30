@@ -9,6 +9,7 @@ import com.example.tasky.models.Task
 import com.example.tasky.viewModels.TasksViewModel
 import android.util.Log
 import com.example.tasky.R
+import android.graphics.Paint
 class TasksListAdapter(
     var tasks: List<Task>,
     private val viewModel: TasksViewModel,
@@ -33,6 +34,18 @@ class TasksListAdapter(
         holder.binding.apply {
             tvTaskTitle.text = tasks[position].title
             tvTaskDescription.text = tasks[position].task
+
+            tvTaskTitle.apply {
+                paintFlags =
+                    if (tasks[position].isCompleted) paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    else paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            }
+            tvTaskDescription.apply {
+                paintFlags =
+                    if (tasks[position].isCompleted) paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    else paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            }
+
             cbCompleted.setOnCheckedChangeListener(null)
             cbCompleted.isChecked = tasks[position].isCompleted
             cbCompleted.setOnCheckedChangeListener { _, isChecked ->

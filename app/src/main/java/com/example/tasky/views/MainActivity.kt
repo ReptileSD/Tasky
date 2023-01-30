@@ -16,46 +16,45 @@ import com.example.tasky.models.TasksRepository
 import com.example.tasky.viewModels.TasksViewModelFactory
 import android.content.Intent
 import com.example.tasky.models.TaskSerializer
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.widget.PopupMenu
+import android.widget.Toast
+import com.example.tasky.R
 class MainActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskDialogInterface {
     private lateinit var binding: ActivityMainBinding
     private lateinit var tasksList: MutableList<Task>
-    private lateinit var adapter: TasksListAdapter
-    private lateinit var layoutManager: LinearLayoutManager
     private lateinit var viewModel: TasksViewModel
+    private lateinit var allTasksFragment: TasksFragment
+    private lateinit var importantTasksFragment: ImportantTasksFragment
+    private lateinit var completedTasksFragment: CompletedTasksFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        allTasksFragment = TasksFragment()
+        importantTasksFragment = ImportantTasksFragment()
+        completedTasksFragment = CompletedTasksFragment()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.frgTasks, allTasksFragment)
+            commit()
+        }
+
         val database = TasksDatabase.getInstance(this)
         val repository = TasksRepository(database)
         val viewModelFactory = TasksViewModelFactory(application, repository)
         viewModel = ViewModelProvider(this, viewModelFactory)[TasksViewModel::class.java]
 
-        adapter =
-            TasksListAdapter(viewModel.getAllTasks().value?.reversed() ?: listOf(), viewModel) {
-                Intent(this, EditTaskActivity::class.java).also { intent ->
-                    intent.putExtra("Task", TaskSerializer.fromTask(it))
-                    startActivity(intent)
-                }
-            }
-        layoutManager = LinearLayoutManager(this)
-        val tasksObserver = Observer<List<Task>> {
-            adapter.tasks = it.reversed()
-            adapter.notifyDataSetChanged()
-        }
-        viewModel.getAllTasks().observe(this, tasksObserver)
-        val itemTouchHelper = TasksItemTouchHelper(viewModel, adapter, binding.root)
-        itemTouchHelper.attachToRecyclerView(binding.rvTasks)
-
-        setContentView(binding.root)
-
         binding.apply {
-            rvTasks.adapter = adapter
-            rvTasks.layoutManager = layoutManager
 
 
             fbtnAdd.setOnClickListener {
-                CreateTaskDialog().show(supportFragmentManager, "Add task")            }
+                CreateTaskDialog().show(supportFragmentManager, "Add task")
+            }
+        burgerMenu.setOnClickListener { showPopup(burgerMenu) }
         }
     }
 
@@ -65,4 +64,37 @@ class MainActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskDialogInter
         val newTask = Task(title, task, isCompleted = false, isImportant = false, date)
         viewModel.add(newTask)
     }
+    private fun showPopup(v: View) {
+    val popup = PopupMenu(this, v)
+    popup.inflate(R.menu.burger_menu)
+    popup.setOnMenuItemClickListener {menuItemClickListener(it)}
+    popup.show()
+}
+
+private fun menuItemClickListener(it: MenuItem): Boolean {
+    when(it.itemId) {
+        R.id.miAllTasks -> {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.frgTasks, allTasksFragment)
+                commit()
+            }
+            return true
+        }
+        R.id.miImportantTasks -> {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.frgTasks, importantTasksFragment)
+                commit()
+            }
+            return true
+        }
+        R.id.miCompletedTasks -> {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.frgTasks, completedTasksFragment)
+                commit()
+            }
+            return true
+        }
+        else -> return false
+    }
+}
 }

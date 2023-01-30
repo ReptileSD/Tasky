@@ -7,8 +7,8 @@
     android:background="@color/background"
     tools:context=".views.MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvTasks"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/frgTasks"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"

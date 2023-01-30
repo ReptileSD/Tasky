@@ -17,4 +17,7 @@
     <string name="set_date">Set date</string>
     <string name="task_is_not_completed">Task is not completed</string>
     <string name="add_to_important">Add to important</string>
+    <string name="all_tasks">All tasks</string>
+    <string name="important_tasks">Important tasks</string>
+    <string name="completed_tasks">Completed tasks</string>
 </resources>
