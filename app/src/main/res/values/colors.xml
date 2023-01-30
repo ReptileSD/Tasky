@@ -10,4 +10,5 @@
     <color name="button">#3EB489</color>
     <color name="onButton">#4A148C</color>
     <color name="background">#F1EAEA</color>
+    <color name="button_red">#FFFF4444</color>
 </resources>

@@ -16,4 +16,7 @@
     <string name="task_deleted">Задача удалена</string>
     <string name="undo">Отменить</string>
     <string name="set_date">Установить дату</string>
+    <string name="task_is_not_completed">Задача не выполнена</string>
+    <string name="add_to_important">Добавить в важное</string>
+
 </resources>

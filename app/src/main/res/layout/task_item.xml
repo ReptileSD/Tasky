@@ -36,12 +36,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/btnAddToFavourite"
             app:layout_constraintStart_toEndOf="@+id/cbCompleted"
             app:layout_constraintTop_toBottomOf="@+id/tvTaskTitle" />
 
@@ -50,15 +49,28 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:maxLines="1"
             android:textAlignment="center"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tvTaskDescription"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnAddToFavourite"
             app:layout_constraintStart_toEndOf="@+id/cbCompleted"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
+
+
+        <ImageButton
+            android:id="@+id/btnAddToFavourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_baseline_star_outline_24"
+            android:contentDescription="@string/add_to_important"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

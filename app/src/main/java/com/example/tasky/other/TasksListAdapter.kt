@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.tasky.databinding.TaskItemBinding
 import com.example.tasky.models.Task
 import com.example.tasky.viewModels.TasksViewModel
-
+import android.util.Log
+import com.example.tasky.R
 class TasksListAdapter(
     var tasks: List<Task>,
     private val viewModel: TasksViewModel,
@@ -36,6 +37,10 @@ class TasksListAdapter(
                 val task = tasks[position]
                 val editedTask = Task(task.title, task.task, isChecked, task.date, task.ID)
                 viewModel.update(editedTask)
+            }
+            btnAddToFavourite.setOnClickListener(null)
+            btnAddToFavourite.setOnClickListener {
+                btnAddToFavourite.setImageResource(R.drawable.ic_baseline_star_24)
             }
         }
     }
