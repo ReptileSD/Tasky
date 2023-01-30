@@ -60,7 +60,6 @@
         android:inputType="text"
         android:minWidth="48dp"
         android:minHeight="48dp"
-        android:text="Title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnBack" />
 
@@ -72,10 +71,10 @@
         android:layout_marginTop="32dp"
         android:autofillHints=""
         android:importantForAutofill="no"
+        android:hint="@string/the_task"
         android:inputType="text"
         android:minWidth="48dp"
         android:minHeight="48dp"
-        android:text="Description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etTitleEdit" />
 

@@ -4,7 +4,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasky.other.TasksListAdapter
 import com.example.tasky.viewModels.TasksViewModel
-import com.example.tasky.models.Task
 
 class TasksItemTouchHelperCallback(
     private val viewModel: TasksViewModel,
@@ -22,6 +21,6 @@ class TasksItemTouchHelperCallback(
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val task = adapter.tasks[viewHolder.adapterPosition]
-        viewModel.deleteTask(task)
+        viewModel.delete(task)
     }
 }

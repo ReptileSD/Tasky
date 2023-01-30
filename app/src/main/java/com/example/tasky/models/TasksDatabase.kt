@@ -15,16 +15,20 @@ abstract class TasksDatabase : RoomDatabase() {
 
     companion object {
         @Volatile
-        private var instance: TasksDatabase? = null
-        private var LOCK = Any()
+        private lateinit var instance: TasksDatabase
 
-        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
-            instance ?: createDB(context).also { instance = it }
+        fun getInstance(context: Context): TasksDatabase {
+            synchronized(this) {
+                if (!::instance.isInitialized) {
+                    instance = createDatabase(context)
+                }
+                return instance
+            }
         }
 
-        private fun createDB(context: Context): TasksDatabase {
+        private fun createDatabase(context: Context): TasksDatabase {
             return Room.databaseBuilder(
-                context.applicationContext,
+                context,
                 TasksDatabase::class.java,
                 "TasksDatabase"
             ).build()
